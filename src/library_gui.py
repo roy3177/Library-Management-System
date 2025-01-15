@@ -73,7 +73,7 @@ class LibraryGUI:
 
             self.original_login_image = Image.open(login_image_path)
 
-            self.login_bg_label = tk.Label(self.login_frame)
+            self.lsgin_bg_label = tk.Label(self.login_frame)
             self.login_bg_label.place(relwidth=1, relheight=1)
 
             self.update_login_background()
