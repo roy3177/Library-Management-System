@@ -1,2 +1,7 @@
 [2025-01-16 00:25:52] ACTION: User Login | STATUS: SUCCESS | DETAILS: User 'roy3177' logged in successfully.
 [2025-01-16 00:28:51] ACTION: User Login | STATUS: SUCCESS | DETAILS: User 'roy3177' logged in successfully.
+[2025-01-16 00:50:43] ACTION: User Login | STATUS: SUCCESS | DETAILS: User 'roy3177' logged in successfully.
+[2025-01-16 00:53:44] ACTION: User Login | STATUS: SUCCESS | DETAILS: User 'roy3177' logged in successfully.
+[2025-01-16 01:07:23] ACTION: User Login | STATUS: SUCCESS | DETAILS: User 'roy3177' logged in successfully.
+[2025-01-16 01:07:38] ACTION: Add to Waitlist | STATUS: SUCCESS | DETAILS: User '44444' added to waitlist for book '1984'.
+[2025-01-16 01:08:01] ACTION: Return Book | STATUS: FAILURE | DETAILS: Book 'r' not found.

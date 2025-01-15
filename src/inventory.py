@@ -4,6 +4,7 @@ from book import Book
 from book_factory import BookFactory
 from update_files import UpdateFiles
 from subject import Subject
+from utils import get_csv_path
 
 
 """
@@ -102,7 +103,7 @@ class Inventory(Subject):
             UpdateFiles.update_books_file(book)
 
             # Update available_books.csv
-            with open("../csv_files/available_books.csv", mode="a", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="a", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title", "Available"])
                 writer.writerow({"Title": book.title, "Available": book.copies})
     
@@ -158,29 +159,28 @@ class Inventory(Subject):
 
             self.books.remove(book_to_remove)
 
-            with open("../csv_files/books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 books_rows = [row for row in reader if row["title"].lower() != title.lower()]
 
-            with open("../csv_files/books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["title", "author", "is_loaned", "copies", "genre", "year"])
                 writer.writeheader()
                 writer.writerows(books_rows)
-
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 available_rows = [row for row in reader if row["Title"].lower() != title.lower()]
 
-            with open("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title", "Available"])
                 writer.writeheader()
                 writer.writerows(available_rows)
 
-            with open("../csv_files/loaned_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 loaned_rows = [row for row in reader if row["Title"].lower() != title.lower()]
 
-            with open("../csv_files/loaned_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title"])
                 writer.writeheader()
                 writer.writerows(loaned_rows)
@@ -250,11 +250,11 @@ class Inventory(Subject):
         Update available_books.csv with the new availability.
         """
         try:
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 rows = list(reader)
 
-            with open("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title", "Available"])
                 writer.writeheader()
                 updated = False
@@ -296,7 +296,7 @@ class Inventory(Subject):
         """
         try:
             available_books = {}
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     title = row.get("Title", "Unknown Title")
@@ -360,7 +360,7 @@ class Inventory(Subject):
 
         available_copies = 0
         try:
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     if row["Title"].lower() == title.lower():
@@ -390,11 +390,11 @@ class Inventory(Subject):
     def update_loaned_books_file(self, title, action="add"):
         try:
 
-            with open("../csv_files/loaned_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 rows = list(reader)
 
-            with open("../csv_files/loaned_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title"])
                 writer.writeheader()
                 for row in rows:
@@ -465,7 +465,7 @@ class Inventory(Subject):
         try:
             # Load available copies from available_books.csv
             available_books = {}
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     title = row.get("Title", "").strip()
@@ -501,10 +501,10 @@ class Inventory(Subject):
         Remove a book from loaned_books.csv if it is returned and has available copies.
         """
         try:
-            with open("../csv_files/loaned_books.csv", mode="r", encoding="utf-8") as file:
+            with open( get_csv_path("loaned_books.csv"), mode="r", encoding="utf-8") as file:
                 lines = file.readlines()
 
-            with open("../csv_files/loaned_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Title"])
                 for line in lines[1:]:
@@ -538,7 +538,7 @@ class Inventory(Subject):
         try:
             book_found = False
 
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 available_books_data = list(reader)
 
@@ -557,7 +557,7 @@ class Inventory(Subject):
             if not book_found:
                 available_books_data.append({"Title": title, "Available": "1"})
 
-            with open("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title", "Available"])
                 writer.writeheader()
                 writer.writerows(available_books_data)
@@ -582,7 +582,7 @@ class Inventory(Subject):
             rows = []
             found = False
 
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     if row["Title"].lower() == title.lower():
@@ -593,7 +593,7 @@ class Inventory(Subject):
             if not found:
                 rows.append({"Title": title, "Available": str(available_copies)})
 
-            with open("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title", "Available"])
                 writer.writeheader()
                 writer.writerows(rows)
@@ -607,7 +607,7 @@ class Inventory(Subject):
         """
         try:
             # Update books.csv
-            with open("../csv_files/books.csv", mode="w", newline="", encoding="utf-8") as books_file:
+            with open(get_csv_path("books.csv"), mode="w", newline="", encoding="utf-8") as books_file:
                 writer = csv.writer(books_file)
                 writer.writerow(["title", "author", "is_loaned", "copies", "genre", "year"])
                 for book in self.books:
@@ -621,7 +621,7 @@ class Inventory(Subject):
                     ])
 
             # Update available_books.csv
-            with open("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8") as available_file:
+            with open(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8") as available_file:
                 writer = csv.writer(available_file)
                 writer.writerow(["Title", "Available"])
                 for book in self.books:
@@ -629,7 +629,7 @@ class Inventory(Subject):
                         writer.writerow([book.title, book.available_copies])
 
             # Update loaned_books.csv
-            with open("../csv_files/loaned_books.csv", mode="w", newline="", encoding="utf-8") as loaned_file:
+            with open(get_csv_path("loaned_books.csv"), mode="w", newline="", encoding="utf-8") as loaned_file:
                 writer = csv.writer(loaned_file)
                 writer.writerow(["Title"])
                 for book in self.books:
@@ -645,7 +645,7 @@ class Inventory(Subject):
         Load the waitlist from a CSV file into the system.
         """
         try:
-            with open("../csv_files/waiting_list.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("waiting_list.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     book_title = row["Book Title"]
@@ -666,7 +666,7 @@ class Inventory(Subject):
         Sync the waitlist to a CSV file, removing duplicates and ensuring consistency.
         """
         try:
-            with open("../csv_files/waiting_list.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("waiting_list.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Book Title", "Username", "Email", "Phone"])  # כותרת
 
@@ -686,11 +686,11 @@ class Inventory(Subject):
         """
         try:
 
-            with open("../csv_files/loaned_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 rows = list(reader)
 
-            with open("../csv_files/loaned_books.csv", mode="w", newline="", encoding="utf-8") as file:
+            with open(get_csv_path("loaned_books.csv"), mode="w", newline="", encoding="utf-8") as file:
                 writer = csv.DictWriter(file, fieldnames=["Title"])
                 writer.writeheader()
                 for row in rows:
@@ -709,7 +709,7 @@ class Inventory(Subject):
         Load books from a CSV file into the inventory and log the action.
         """
         try:
-            with open("../csv_files/books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     existing_book = next((b for b in self.books if b.title == row["title"]), None)

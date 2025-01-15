@@ -2,9 +2,8 @@ import csv
 import tkinter as tk
 from tkinter import messagebox,simpledialog
 from inventory import Inventory
-from PIL import Image, ImageTk
 from user_manager import UserManager
-import os
+from utils import get_csv_path
 
 class LibraryGUI:
     """
@@ -70,21 +69,7 @@ class LibraryGUI:
         login_button = tk.Button(self.login_frame, text="Login", command=self.login)
         login_button.place(relx=0.5, rely=0.65, anchor="center")
 
-    def update_login_background(self, event=None):
-        """
-        Update the login screen background dynamically based on window size
-        """
-        try:
-            width = self.root.winfo_width()
-            height = self.root.winfo_height()
 
-            resized_image = self.original_login_image.resize((width, height), Image.Resampling.LANCZOS)
-            self.login_bg_image = ImageTk.PhotoImage(resized_image)
-
-            self.login_bg_label.config(image=self.login_bg_image)
-            self.login_bg_label.image = self.login_bg_image
-        except Exception as e:
-            print(f"Error updating login background image: {e}")
 
     def login(self):
         username = self.username_entry.get()
@@ -194,7 +179,6 @@ class LibraryGUI:
 
         if not self.inventory.waitlist:
             self.output_area.insert(tk.END, "No waitlist entries found.\n")
-            print("DEBUG: Waitlist is empty or not loaded properly.")
         else:
             self.output_area.insert(tk.END, "Waitlist:\n")
             self.output_area.insert(tk.END, "-" * 180 + "\n")
@@ -264,7 +248,7 @@ class LibraryGUI:
         try:
 
             available_books = {}
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     title = row.get("Title", "Unknown Title")
@@ -375,7 +359,7 @@ class LibraryGUI:
 
         try:
             available_books = {}
-            with open("../csv_files/available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     title = row.get("Title", "Unknown Title")
