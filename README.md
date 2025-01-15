@@ -87,10 +87,6 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/roy3177/library-management-system.git
    cd library-management-system  
-2. Install dependencies:
-   bash
-   pip install -r requirements.txt
-   
 
 ---
 
