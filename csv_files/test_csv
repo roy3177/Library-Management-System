@@ -1,0 +1,3 @@
+title,author,is_loaned,copies,genre,year
+Book A,Author A,No,5,Genre A,2021
+Book B,Author B,Yes,2,Genre B,2020
