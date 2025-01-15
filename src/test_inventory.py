@@ -6,6 +6,7 @@ from unittest.mock import mock_open, patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from inventory import Inventory
 from book import Book
+from utils import get_csv_path
 
 
 class TestAvailableBooks(unittest.TestCase):
@@ -141,7 +142,7 @@ class TestAddBookWithCSV(unittest.TestCase):
 
         inventory.add_book(book)
 
-        mock_file.assert_any_call("../csv_files/books.csv", mode="a", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("available_books.csv"), mode="a", newline="", encoding="utf-8")
 
         self.assertIn(book, inventory.books)
 
@@ -162,7 +163,7 @@ class TestInventoryRemoveBook(unittest.TestCase):
 
         self.assertNotIn("Book1", [book.title for book in inventory.books])
 
-        mock_file.assert_any_call("../csv_files/books.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("books.csv"), mode="w", newline="", encoding="utf-8")
 
 class TestUpdateAvailableBooks(unittest.TestCase):
     @patch("builtins.open", new_callable=mock_open, read_data="Title,Available\nBook1,5\nBook2,3")
@@ -170,7 +171,7 @@ class TestUpdateAvailableBooks(unittest.TestCase):
         inventory = Inventory()
         inventory.update_available_books_csv("Book1", 4)
 
-        mock_file.assert_called_with("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_called_with(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8")
         handle = mock_file()
         handle.write.assert_any_call("Title,Available\r\n")
         handle.write.assert_any_call("Book1,4\r\n")
@@ -182,7 +183,7 @@ class TestWaitlist(unittest.TestCase):
 
         inventory.add_to_waitlist("Book1", "User1", "user1@example.com", "123456789")
 
-        mock_file.assert_any_call("../csv_files/waiting_list.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("waiting_list.csv"), mode="w", newline="", encoding="utf-8")
 
         handle = mock_file()
         handle.write.assert_any_call("Book Title,Username,Email,Phone\r\n")
@@ -198,7 +199,7 @@ class TestWaitlist(unittest.TestCase):
         inventory.waitlist["Book1"].pop(0)
         inventory.sync_waitlist_to_file()
 
-        mock_file.assert_called_with("../csv_files/waiting_list.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_called_with(get_csv_path("waiting_list.csv"), mode="w", newline="", encoding="utf-8")
         handle = mock_file()
         self.assertNotIn("User1", str(handle.write.call_args_list))
 
@@ -227,7 +228,7 @@ class TestReturnBook(unittest.TestCase):
         with patch("csv.DictReader", return_value=[{"Title": "Book1", "Available": "0"}]):
             result = inventory.return_book("Book1")
 
-        mock_file.assert_any_call("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8")
 
         handle = mock_file()
         handle.write.assert_any_call("Title,Available\r\n")
@@ -247,7 +248,7 @@ class TestLendBook(unittest.TestCase):
 
         self.assertTrue(result)
 
-        mock_file.assert_any_call("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8")
         handle = mock_file()
         handle.write.assert_any_call("Title,Available\r\n")
         handle.write.assert_any_call("Book1,0\r\n")
@@ -262,8 +263,8 @@ class TestSyncToFiles(unittest.TestCase):
 
         inventory.sync_to_files()
 
-        mock_file.assert_any_call("../csv_files/books.csv", mode="w", newline="", encoding="utf-8")
-        mock_file.assert_any_call("../csv_files/available_books.csv", mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("books.csv"), mode="w", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path("available_books.csv"), mode="w", newline="", encoding="utf-8")
 
 if __name__ == "__main__":
     unittest.main()
