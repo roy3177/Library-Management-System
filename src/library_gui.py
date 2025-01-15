@@ -4,7 +4,6 @@ from tkinter import messagebox,simpledialog
 from inventory import Inventory
 from PIL import Image, ImageTk
 from user_manager import UserManager
-from update_files import UpdateFiles
 import os
 
 class LibraryGUI:
@@ -30,58 +29,23 @@ class LibraryGUI:
         self.root.geometry("600x800")  # Define the size of the frame
 
 
-        self.original_image = Image.open("../assets/books_background.jpg") #The location of the image
         self.bg_image = None
         self.bg_label = tk.Label(self.root)
         self.bg_label.place(relwidth=1, relheight=1)
-        self.update_background_image()
-        self.root.bind("<Configure>", self.resize_image)
 
         self.login_frame=None
         self.main_frame=None
 
         self.show_login_screen()
 
-    def update_background_image(self):
-        """
-        Updating the background image according to the window siz
-        """
-        width = self.root.winfo_width()
-        height = self.root.winfo_height()
-        resized_image = self.original_image.resize((width, height), Image.Resampling.LANCZOS)
-        self.bg_image = ImageTk.PhotoImage(resized_image)
-        self.bg_label.config(image=self.bg_image)
-
-    def resize_image(self, event):
-        """
-        Resize the image by the size of the window
-        """
-        self.update_background_image()
 
     def show_login_screen(self):
         """
-        Display the login screen with a dynamic background image
+        Display the login screen
         """
         self.login_frame = tk.Frame(self.root)
         self.login_frame.place(relwidth=1, relheight=1)
 
-        try:
-            login_image_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../assets/books_background.jpg"))
-
-            if not os.path.exists(login_image_path):
-                raise FileNotFoundError(f"Login image not found: {login_image_path}")
-
-            self.original_login_image = Image.open(login_image_path)
-
-            self.lsgin_bg_label = tk.Label(self.login_frame)
-            self.login_bg_label.place(relwidth=1, relheight=1)
-
-            self.update_login_background()
-
-            self.root.bind("<Configure>", self.update_login_background)
-        except Exception as e:
-            print(f"Error loading login background image: {e}")
-            messagebox.showerror("Error", f"Failed to load login background image: {e}")
 
         title_label = tk.Label(
             self.login_frame,

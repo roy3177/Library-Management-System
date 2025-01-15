@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import mock_open, patch,call
+from unittest.mock import mock_open, patch
 from user_manager import UserManager
 from user import User
 

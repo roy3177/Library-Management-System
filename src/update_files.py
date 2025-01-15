@@ -23,7 +23,7 @@ class UpdateFiles(object):
             df = pd.DataFrame([row])
 
             # Append the DataFrame to the CSV file with a proper line terminator
-            with open("../csv_files/books.csv",mode="a",newline='',encoding="utf-8") as file:
+            with open("../csv_files/books.csv", mode="a", newline='', encoding="utf-8") as file:
                 df.to_csv(file,index=False,header=False)
 
             print("SUCCESS: Book added to books.csv")
