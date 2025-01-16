@@ -19,7 +19,7 @@ class TestAvailableBooks(unittest.TestCase):
             {"Title": "Book2", "Available": "3"}
         ]):
             available_books = {}
-            with open("available_books.csv", mode="r", encoding="utf-8") as file:
+            with open(get_csv_path("available_books.csv"), mode="r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
                     title = row["Title"]
@@ -142,7 +142,7 @@ class TestAddBookWithCSV(unittest.TestCase):
 
         inventory.add_book(book)
 
-        mock_file.assert_any_call(get_csv_path("available_books.csv"), mode="a", newline="", encoding="utf-8")
+        mock_file.assert_any_call(get_csv_path(get_csv_path("available_books.csv")), mode="a", newline="", encoding="utf-8")
 
         self.assertIn(book, inventory.books)
 
