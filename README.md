@@ -1,7 +1,7 @@
 # Library Management System
 # By: Roy Meoded & Noa Agassi
 
-**************All the program is working only on Linux**************
+#**************All the program is working only on Linux**************
 ## Introduction
 The *Library Management System* is a Python-based project designed to manage book inventories
 ,users,loans,and returns efficiently.
