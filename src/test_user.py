@@ -2,6 +2,8 @@ import unittest
 from unittest.mock import mock_open, patch
 from user_manager import UserManager
 from user import User
+from utils import get_csv_path
+
 
 class TestUserManager(unittest.TestCase):
 
@@ -29,7 +31,7 @@ class TestUserManager(unittest.TestCase):
 
         manager.save_users()
 
-        mock_file.assert_any_call("../csv_files/users.csv", mode="w", newline="")
+        mock_file.assert_any_call(get_csv_path("users.csv"), mode="w", newline="")
 
         handle = mock_file()
         written_calls = [call.args[0] for call in handle.write.call_args_list]
