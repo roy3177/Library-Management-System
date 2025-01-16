@@ -101,7 +101,7 @@ To run the *Library Management System* on your Linux machine, follow these steps
    
 
 2. *Install Dependencies*
-   Add to csv.files to the src files by cp csv_files/*.csv src/
+   Add to csv.files to the src files for Linux/mac: (cp csv_files/*.csv src/),for Windows:(copy csv_files\*.csv src\)
    Use the final.txt file to install the necessary Python libraries:
    bash
    pip install -r final.txt
