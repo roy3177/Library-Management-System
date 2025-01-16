@@ -100,30 +100,31 @@ To run the *Library Management System* on your Linux machine, follow these steps
    cd Library-Management-System
    
 
-2. *Install Dependencies*  
+2. *Install Dependencies*
+   Add to csv.files to the src files by cp csv_files/*.csv src/
    Use the final.txt file to install the necessary Python libraries:
    bash
    pip install -r final.txt
    
 
-3. *Run the GUI*  
+4. *Run the GUI*  
    The main entry point for interacting with the program is the graphical user interface (library_gui.py). Launch the GUI using the following command:
    bash
    python src/library_gui.py
    
 
-4. *Interact with the GUI*  
+5. *Interact with the GUI*  
    - *Log in or Register*: Use the user management options to log in or register new users.
    - *Manage Books*: Add, remove, search, lend, or return books directly through the GUI.
    - *Manage Waiting Lists*: Add or remove users from waiting lists.
 
-5. *Run Unit Tests (Optional)*  
+6. *Run Unit Tests (Optional)*  
    To validate the functionality of the program, you can run the included unit tests:
    bash
    python -m unittest discover src/
    
 
-6. *Exit the Program*  
+7. *Exit the Program*  
    Close the GUI window when you are finished with your tasks.
 
 ---
